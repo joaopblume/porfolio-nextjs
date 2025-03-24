@@ -16,14 +16,22 @@ const REPO_TOPICS = {
  */
 export async function fetchGitHubRepositories() {
   try {
+    console.log('Iniciando busca de repositórios...');
     const response = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&direction=desc`);
+    
+    console.log('Status da resposta:', response.status);
     
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
+      console.error('Erro na resposta:', errorData);
       throw new Error(`Failed to fetch repositories: ${errorData.message || response.statusText}`);
     }
     
     const repositories = await response.json();
+    console.log('Repositórios encontrados:', repositories.length);
+    
+    // Log para verificar o GITHUB_USERNAME
+    console.log('GITHUB_USERNAME:', GITHUB_USERNAME);
     
     // Filter and sort repositories
     const filteredRepos = repositories.filter(repo => 

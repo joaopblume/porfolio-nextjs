@@ -5,6 +5,18 @@ import Image from "next/image";
 import Link from "next/link";
 import { fetchGitHubRepositories, filterRepositoriesByTag, timeAgo, FEATURED_REPOS } from "@/lib/github";
 
+const testProjects = [
+  {
+    id: 1,
+    name: "test-project",
+    description: "This is a test project",
+    topics: ["react", "javascript"],
+    html_url: "https://github.com/",
+    updated_at: new Date().toISOString(),
+    homepage: "https://example.com"
+  }
+];
+
 export default function Projects() {
   const [projects, setProjects] = useState([]);
   const [filteredProjects, setFilteredProjects] = useState([]);
@@ -17,18 +29,22 @@ export default function Projects() {
       try {
         setLoading(true);
         setError(null);
+        console.log('Iniciando carregamento de projetos...');
         const repos = await fetchGitHubRepositories();
-        setProjects(repos);
-        setFilteredProjects(repos);
+        console.log('Projetos recebidos:', repos && repos.length);
+        setProjects(repos || []);
+        setFilteredProjects(repos || []);
         setLoading(false);
       } catch (err) {
-        setError(err.message || "Could not load projects. Please check your GitHub username or try again later.");
+        console.error('Erro ao carregar projetos:', err);
+        setError(err.message || 'Could not load projects. Please check your GitHub username or try again later.');
         setLoading(false);
       }
     }
     
     loadProjects();
   }, []);
+    
 
   function handleFilterChange(tag) {
     setActiveFilter(tag);
