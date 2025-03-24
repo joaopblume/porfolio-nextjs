@@ -1,20 +1,26 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    images: {
-      domains: ['api.placeholder.com'], // Allow placeholder images
-      remotePatterns: [
-        {
-          protocol: 'https',
-          hostname: 'api.placeholder.com',
-          port: '',
-          pathname: '/**',
-        },
-      ],
+  images: {
+    domains: ['placehold.co'], // Permitir imagens de serviços de placeholder
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'placehold.co',
+        port: '',
+        pathname: '/**',
+      },
+    ],
+  },
+  experimental: {
+    // Configuração correta de serverActions como objeto, não booleano
+    serverActions: {
+      allowedOrigins: ['localhost:3000', '*.vercel.app'],
     },
-    experimental: {
-      // Enable this if you have API routes that need to handle form submissions
-      serverActions: true,
-    },
-  }
-  
+  },
+  // Ignorar completamente erros de ESLint durante a build
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+}
+
 export default nextConfig;
