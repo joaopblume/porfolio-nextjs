@@ -51,15 +51,15 @@ export default function About() {
           </div>
           
           <div className="about-text">
-            <h3>Hey there, I"m <span className="highlight">João Paulo Blume</span></h3>
+            <h3>Hey there, Im <span className="highlight">João Paulo Blume</span></h3>
             
-            <p>I"m currently working as an <strong>Oracle Database Administrator</strong>, but in practice, I"ve been a <strong>Backend Developer</strong> for over 5 years, specializing in database integrations and APIs.</p>
+            <p>Im currently working as an <strong>Oracle Database Administrator</strong>, but in practice, I"ve been a <strong>Backend Developer</strong> for over 5 years, specializing in database integrations and APIs.</p>
             
             <p>My background as a DBA has been invaluable, teaching me the lowest levels of software: operating systems, hardware resources, virtualization, and more. This foundation gives me a unique perspective when developing solutions.</p>
             
             <p>I also work as a <strong>Software Developer</strong> and <strong>Data Engineer</strong>, planning, deploying, and developing integration solutions between various systems and data sources.</p>
             
-            <p>I"m passionate about technology, and each challenge inspires me to learn new skills. I"d love to share my journey through this portfolio and perhaps find partners to collaborate on new ideas.</p>
+            <p>Im passionate about technology, and each challenge inspires me to learn new skills. Id love to share my journey through this portfolio and perhaps find partners to collaborate on new ideas.</p>
             
             <div className="about-cta">
               <Link href="#contact" className="btn about-btn">Let"s Talk</Link>

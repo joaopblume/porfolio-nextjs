@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 export default function Contact() {
   const [formState, setFormState] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: ''
+    name: "",
+    email: "",
+    subject: "",
+    message: ""
   });
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
@@ -15,21 +15,21 @@ export default function Contact() {
   useEffect(() => {
     const observerOptions = {
       root: null,
-      rootMargin: '0px 0px -100px 0px',
+      rootMargin: "0px 0px -100px 0px",
       threshold: 0.1
     };
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
+          entry.target.classList.add("visible");
           observer.unobserve(entry.target);
         }
       });
     }, observerOptions);
 
     // Observe all fade-in elements in this component
-    document.querySelectorAll('#contact .fade-in').forEach(element => {
+    document.querySelectorAll("#contact .fade-in").forEach(element => {
       observer.observe(element);
     });
 
@@ -56,13 +56,13 @@ export default function Contact() {
     const newErrors = {};
     
     // Basic validation
-    if (!formState.name.trim()) newErrors.name = 'Name is required';
-    if (!formState.email.trim()) newErrors.email = 'Email is required';
+    if (!formState.name.trim()) newErrors.name = "Name is required";
+    if (!formState.email.trim()) newErrors.email = "Email is required";
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formState.email)) {
-      newErrors.email = 'Invalid email format';
+      newErrors.email = "Invalid email format";
     }
-    if (!formState.subject.trim()) newErrors.subject = 'Subject is required';
-    if (!formState.message.trim()) newErrors.message = 'Message is required';
+    if (!formState.subject.trim()) newErrors.subject = "Subject is required";
+    if (!formState.message.trim()) newErrors.message = "Message is required";
     
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -83,7 +83,7 @@ export default function Contact() {
       // Form will be submitted normally through the form action
       // No need to reset the form as the page will refresh
     } catch (error) {
-      console.error('Error submitting form:', error);
+      console.error("Error submitting form:", error);
       setSubmitting(false);
     }
   };
@@ -102,7 +102,7 @@ export default function Contact() {
           <div className="form-group">
             <input 
               type="text" 
-              className={`form-control ${errors.name ? 'error' : ''}`} 
+              className={`form-control ${errors.name ? "error" : ""}`} 
               id="name" 
               name="name" 
               placeholder="Your Name" 
@@ -114,7 +114,7 @@ export default function Contact() {
           <div className="form-group">
             <input 
               type="email" 
-              className={`form-control ${errors.email ? 'error' : ''}`} 
+              className={`form-control ${errors.email ? "error" : ""}`} 
               id="email" 
               name="email" 
               placeholder="Your Email" 
@@ -126,7 +126,7 @@ export default function Contact() {
           <div className="form-group">
             <input 
               type="text" 
-              className={`form-control ${errors.subject ? 'error' : ''}`} 
+              className={`form-control ${errors.subject ? "error" : ""}`} 
               id="subject" 
               name="subject" 
               placeholder="Subject" 
@@ -137,7 +137,7 @@ export default function Contact() {
           </div>
           <div className="form-group">
             <textarea 
-              className={`form-control ${errors.message ? 'error' : ''}`} 
+              className={`form-control ${errors.message ? "error" : ""}`} 
               id="message" 
               name="message" 
               placeholder="Your Message" 
@@ -147,13 +147,13 @@ export default function Contact() {
             ></textarea>
           </div>
           <input type="hidden" name="_subject" value="New message from Portfolio" />
-          <input type="text" name="_gotcha" style={{ display: 'none' }} />
+          <input type="text" name="_gotcha" style={{ display: "none" }} />
           <button 
             type="submit" 
             className="submit-btn"
             disabled={submitting}
           >
-            {submitting ? 'Sending...' : 'Send Message'}
+            {submitting ? "Sending..." : "Send Message"}
           </button>
         </form>
       </div>

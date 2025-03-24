@@ -4,7 +4,7 @@ export default function Hero({ name = "Joao Paulo" }) {
   return (
     <section id="hero" className="hero">
       <div className="container hero-content">
-        <h1>Hello, I'm <span id="yourName">{name}</span></h1>
+        <h1>Hello, Im <span id="yourName">{name}</span></h1>
         <p className="hero-subtitle">Software Developer & Problem Solver</p>
         <Link href="#about" className="btn">Who am I?</Link>
       </div>
