@@ -1,16 +1,16 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { fetchGitHubRepositories, filterRepositoriesByTag, timeAgo, FEATURED_REPOS } from '@/lib/github';
+import { useState, useEffect } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { fetchGitHubRepositories, filterRepositoriesByTag, timeAgo, FEATURED_REPOS } from "@/lib/github";
 
 export default function Projects() {
   const [projects, setProjects] = useState([]);
   const [filteredProjects, setFilteredProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [activeFilter, setActiveFilter] = useState('all');
+  const [activeFilter, setActiveFilter] = useState("all");
 
   useEffect(() => {
     async function loadProjects() {
@@ -22,7 +22,7 @@ export default function Projects() {
         setFilteredProjects(repos);
         setLoading(false);
       } catch (err) {
-        setError(err.message || 'Could not load projects. Please check your GitHub username or try again later.');
+        setError(err.message || "Could not load projects. Please check your GitHub username or try again later.");
         setLoading(false);
       }
     }
@@ -46,26 +46,26 @@ export default function Projects() {
           <div className="filter-label">Filter by:</div>
           <div className="filter-tags">
             <button 
-              className={`filter-tag ${activeFilter === 'all' ? 'active' : ''}`} 
-              onClick={() => handleFilterChange('all')}
+              className={`filter-tag ${activeFilter === "all" ? "active" : ""}`} 
+              onClick={() => handleFilterChange("all")}
             >
               All
             </button>
             <button 
-              className={`filter-tag ${activeFilter === 'featured' ? 'active' : ''}`} 
-              onClick={() => handleFilterChange('featured')}
+              className={`filter-tag ${activeFilter === "featured" ? "active" : ""}`} 
+              onClick={() => handleFilterChange("featured")}
             >
               Featured
             </button>
             <button 
-              className={`filter-tag ${activeFilter === 'frontend' ? 'active' : ''}`} 
-              onClick={() => handleFilterChange('frontend')}
+              className={`filter-tag ${activeFilter === "frontend" ? "active" : ""}`} 
+              onClick={() => handleFilterChange("frontend")}
             >
               Frontend
             </button>
             <button 
-              className={`filter-tag ${activeFilter === 'backend' ? 'active' : ''}`} 
-              onClick={() => handleFilterChange('backend')}
+              className={`filter-tag ${activeFilter === "backend" ? "active" : ""}`} 
+              onClick={() => handleFilterChange("backend")}
             >
               Backend
             </button>
@@ -81,16 +81,16 @@ export default function Projects() {
         
         {/* Error message */}
         {error && (
-          <div id="projects-error" style={{ display: 'block' }}>
+          <div id="projects-error" style={{ display: "block" }}>
             <p>{error}</p>
           </div>
         )}
         
         {/* Projects grid */}
         {!loading && !error && (
-          <div className="projects-grid" style={{ display: 'grid' }}>
+          <div className="projects-grid" style={{ display: "grid" }}>
             {filteredProjects.map((repo) => (
-              <div key={repo.id} className={`project-card fade-in ${FEATURED_REPOS.includes(repo.name) ? 'featured' : ''}`}>
+              <div key={repo.id} className={`project-card fade-in ${FEATURED_REPOS.includes(repo.name) ? "featured" : ""}`}>
                 <div className="project-image">
                   <img 
                     src={`/images/${repo.name}.webp`}
@@ -98,7 +98,7 @@ export default function Projects() {
                     className="contain-fit"
                     onError={(e) => {
                       e.target.onerror = null;
-                      e.target.src = '/api/placeholder/600/400';
+                      e.target.src = `https://placehold.co/600x400/e0e0e0/888888?text=${repo.name}`;
                       e.target.alt = `${repo.name} (placeholder)`;
                       e.target.classList.remove('contain-fit');
                     }}
@@ -107,7 +107,7 @@ export default function Projects() {
                 </div>
                 <div className="project-details">
                   <h3 className="project-title">{repo.name}</h3>
-                  <p className="project-description">{repo.description || 'No description available'}</p>
+                  <p className="project-description">{repo.description || "No description available"}</p>
                   
                   {repo.topics && repo.topics.length > 0 && (
                     <div className="project-topics">
@@ -153,7 +153,7 @@ export default function Projects() {
         
         {/* Empty state */}
         {!loading && !error && filteredProjects.length === 0 && (
-          <div id="projects-empty" style={{ display: 'block' }}>
+          <div id="projects-empty" style={{ display: "block" }}>
             <p>No projects match the current filter. Try another filter.</p>
           </div>
         )}
@@ -181,9 +181,9 @@ export default function Projects() {
                 <line x1="5" y1="12" x2="19" y2="12"></line>
               </svg>
             </div>
-            <h3>Didn't find a project that fits your needs?</h3>
-            <p>Let's create something new together and add it to this list.</p>
-            <a href="#contact" className="cta-button">Let's talk</a>
+            <h3>Didn"t find a project that fits your needs?</h3>
+            <p>Let"s create something new together and add it to this list.</p>
+            <a href="#contact" className="cta-button">Let"s talk</a>
           </div>
         </div>
       </div>

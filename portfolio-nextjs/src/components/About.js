@@ -1,28 +1,28 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
-import Link from 'next/link';
+import { useEffect } from "react";
+import Link from "next/link";
 
 export default function About() {
   // Este useEffect configura um observer para efeitos de fade-in
   useEffect(() => {
     const observerOptions = {
       root: null,
-      rootMargin: '0px 0px -100px 0px',
+      rootMargin: "0px 0px -100px 0px",
       threshold: 0.1
     };
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
+          entry.target.classList.add("visible");
           observer.unobserve(entry.target);
         }
       });
     }, observerOptions);
 
     // Observa todos os elementos fade-in neste componente
-    document.querySelectorAll('#about .fade-in').forEach(element => {
+    document.querySelectorAll("#about .fade-in").forEach(element => {
       observer.observe(element);
     });
 
@@ -42,8 +42,8 @@ export default function About() {
                 alt="João Paulo Blume" 
                 onError={(e) => {
                   e.target.onerror = null; 
-                  e.target.src = '/api/placeholder/400/400'; 
-                  e.target.alt = 'João Paulo Blume';
+                  e.target.src = "/api/placeholder/400/400"; 
+                  e.target.alt = "João Paulo Blume";
                 }}
               />
             </div>
@@ -51,18 +51,18 @@ export default function About() {
           </div>
           
           <div className="about-text">
-            <h3>Hey there, I'm <span className="highlight">João Paulo Blume</span></h3>
+            <h3>Hey there, I"m <span className="highlight">João Paulo Blume</span></h3>
             
-            <p>I'm currently working as an <strong>Oracle Database Administrator</strong>, but in practice, I've been a <strong>Backend Developer</strong> for over 5 years, specializing in database integrations and APIs.</p>
+            <p>I"m currently working as an <strong>Oracle Database Administrator</strong>, but in practice, I"ve been a <strong>Backend Developer</strong> for over 5 years, specializing in database integrations and APIs.</p>
             
             <p>My background as a DBA has been invaluable, teaching me the lowest levels of software: operating systems, hardware resources, virtualization, and more. This foundation gives me a unique perspective when developing solutions.</p>
             
             <p>I also work as a <strong>Software Developer</strong> and <strong>Data Engineer</strong>, planning, deploying, and developing integration solutions between various systems and data sources.</p>
             
-            <p>I'm passionate about technology, and each challenge inspires me to learn new skills. I'd love to share my journey through this portfolio and perhaps find partners to collaborate on new ideas.</p>
+            <p>I"m passionate about technology, and each challenge inspires me to learn new skills. I"d love to share my journey through this portfolio and perhaps find partners to collaborate on new ideas.</p>
             
             <div className="about-cta">
-              <Link href="#contact" className="btn about-btn">Let's Talk</Link>
+              <Link href="#contact" className="btn about-btn">Let"s Talk</Link>
               <Link href="#projects" className="btn about-btn-outline">View My Work</Link>
             </div>
           </div>

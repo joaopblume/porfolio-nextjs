@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
-import Image from 'next/image';
+import { useEffect } from "react";
+import Image from "next/image";
 
 // Define tools data array
 const tools = [
@@ -72,21 +72,21 @@ export default function Tools() {
   useEffect(() => {
     const observerOptions = {
       root: null,
-      rootMargin: '0px 0px -100px 0px',
+      rootMargin: "0px 0px -100px 0px",
       threshold: 0.1
     };
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
+          entry.target.classList.add("visible");
           observer.unobserve(entry.target);
         }
       });
     }, observerOptions);
 
     // Observe all fade-in elements in this component
-    document.querySelectorAll('#tools .fade-in').forEach(element => {
+    document.querySelectorAll("#tools .fade-in").forEach(element => {
       observer.observe(element);
     });
 
