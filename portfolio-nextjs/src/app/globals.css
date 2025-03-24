@@ -548,12 +548,7 @@ header.scrolled {
   transform: translateY(-2px);
 }
 
-/* Adjust card height for a more consistent appearance */
-.projects-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 2.5rem;
-}
+
 
 /* Card expansion transition */
 .project-card {
@@ -633,7 +628,6 @@ header.scrolled {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   gap: 2.5rem;
-  display: none; /* Will be shown via JS */
 }
 
 .project-card {
@@ -1254,10 +1248,6 @@ footer {
 
   .hero-subtitle {
       font-size: 1.2rem;
-  }
-
-  .projects-grid {
-      grid-template-columns: 1fr;
   }
 
   .tools-grid {

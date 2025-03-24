@@ -26,6 +26,7 @@ export default function Home() {
         }
       });
     }, observerOptions);
+  
 
     // Observe all fade-in elements
     document.querySelectorAll('.fade-in').forEach(element => {
