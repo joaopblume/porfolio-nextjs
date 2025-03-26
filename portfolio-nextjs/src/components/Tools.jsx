@@ -200,7 +200,7 @@ const ToolsPiano = () => {
   };
 
   return (
-    <div className={styles.pianoContainer}>
+    <div className={`${styles.pianoContainer} ${styles.pianoRoot}`}>
       <div className={styles.piano} ref={pianoRef}>
         <div className={styles.keyContainer}>
           {/* Renderiza as teclas brancas primeiro como base */}

@@ -1,6 +1,7 @@
-:root {
+.pianoRoot {
     --white-key-width: calc(100% / 23); /* Número total de teclas brancas (23) */
     --black-key-width: calc(var(--white-key-width) * 0.6);
+    --key-color-rgb: 0, 0, 255;
   }
   
   .pianoContainer {
@@ -92,6 +93,8 @@
     transform: translateX(-50%);
     border-radius: 0 0 3px 3px;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+    /* Importante: garantir que todas as teclas pretas sejam exibidas */
+    overflow: visible;
   }
   
   .blackKey::before {
