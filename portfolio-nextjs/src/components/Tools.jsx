@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import styles from './styles/Tools.module.css';
 
 const ToolsPiano = () => {
-  const [activeKey, setActiveKey] = useState(null);
+  const [activeKeys, setActiveKeys] = useState({}); // Change to an object to track multiple active keys
   const [displayBlocks, setDisplayBlocks] = useState([]);
   const audioRefs = useRef({});
   const pianoRef = useRef(null);
@@ -84,7 +84,8 @@ const ToolsPiano = () => {
     return {
       ...tool,
       noteWithOctave,
-      keyboardKey: noteToKeyMap[noteWithOctave] || ''
+      keyboardKey: noteToKeyMap[noteWithOctave] || '',
+      id: `${tool.note}${tool.octave}` // Add a unique ID for each tool
     };
   });
   
@@ -116,19 +117,43 @@ const ToolsPiano = () => {
       audioRefs.current[`${tool.note}${tool.octave}`] = audio;
     });
     
-    // Adiciona event listener para teclas do teclado
+    // Adiciona event listeners para teclas do teclado
     const handleKeyDown = (event) => {
+      const key = event.key.toLowerCase();
+      if (keyboardMap[key] && !event.repeat) { // Avoid repeat key events
+        const noteWithOctave = keyboardMap[key];
+        const tool = toolsWithMeta.find(t => `${t.note}${t.octave}` === noteWithOctave);
+        if (tool) {
+          // Mark this key as active
+          setActiveKeys(prev => ({
+            ...prev,
+            [tool.id]: tool
+          }));
+          
+          playSound(tool);
+          addDisplayBlock(tool);
+        }
+      }
+    };
+    
+    const handleKeyUp = (event) => {
       const key = event.key.toLowerCase();
       if (keyboardMap[key]) {
         const noteWithOctave = keyboardMap[key];
         const tool = toolsWithMeta.find(t => `${t.note}${t.octave}` === noteWithOctave);
         if (tool) {
-          handleKeyClick(tool);
+          // Remove this key from active keys
+          setActiveKeys(prev => {
+            const newState = { ...prev };
+            delete newState[tool.id];
+            return newState;
+          });
         }
       }
     };
     
     window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keyup', handleKeyUp);
     
     // Limpeza quando o componente é desmontado
     return () => {
@@ -137,6 +162,7 @@ const ToolsPiano = () => {
         audio.currentTime = 0;
       });
       window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
     };
   }, []);
   
@@ -169,16 +195,23 @@ const ToolsPiano = () => {
   };
   
   const handleKeyClick = (tool) => {
-    setActiveKey(tool);
-    playSound(tool);
+    // Add this key to active keys
+    setActiveKeys(prev => ({
+      ...prev,
+      [tool.id]: tool
+    }));
     
-    // Adiciona um bloco de exibição para esta ferramenta
+    playSound(tool);
     addDisplayBlock(tool);
     
-    // Reset activeKey after a short delay to create a "pressed" effect
+    // Remove the active state after 300ms
     setTimeout(() => {
-      setActiveKey(null);
-    }, 200);
+      setActiveKeys(prev => {
+        const newState = { ...prev };
+        delete newState[tool.id];
+        return newState;
+      });
+    }, 300);
   };
 
   // Calcula a posição de uma tecla preta com base na nota e oitava
@@ -243,11 +276,14 @@ const ToolsPiano = () => {
           {whiteKeys.map((tool, index) => (
             <div 
               key={`white-${index}`}
-              className={`${styles.whiteKey} ${activeKey === tool ? styles.activeWhite : ''}`}
+              className={`${styles.whiteKey} ${activeKeys[tool.id] ? styles.activeWhite : ''}`}
               style={{
                 '--key-color': tool.color,
               }}
               onClick={() => handleKeyClick(tool)}
+              onMouseDown={() => handleKeyClick(tool)}
+              // Using inline style for absolute certainty
+              data-active={activeKeys[tool.id] ? "true" : "false"}
             >
               {tool.keyboardKey && (
                 <div className={styles.keyboardKey}>{tool.keyboardKey}</div>
@@ -264,12 +300,15 @@ const ToolsPiano = () => {
             return (
               <div 
                 key={`black-${index}`}
-                className={`${styles.blackKey} ${activeKey === tool ? styles.activeBlack : ''}`}
+                className={`${styles.blackKey} ${activeKeys[tool.id] ? styles.activeBlack : ''}`}
                 style={{
                   '--key-color': tool.color,
                   left: `calc(${position} * var(--white-key-width) + (var(--white-key-width) / 2))`
                 }}
                 onClick={() => handleKeyClick(tool)}
+                onMouseDown={() => handleKeyClick(tool)}
+                // Using inline attribute for absolute certainty
+                data-active={activeKeys[tool.id] ? "true" : "false"}
               >
                 {tool.keyboardKey && (
                   <div className={styles.keyboardKeyBlack}>{tool.keyboardKey}</div>
