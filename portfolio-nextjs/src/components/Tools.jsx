@@ -3,7 +3,7 @@ import styles from './styles/Tools.module.css';
 
 const ToolsPiano = () => {
   const [activeKey, setActiveKey] = useState(null);
-  const [holoKey, setHoloKey] = useState(null);
+  const [displayBlocks, setDisplayBlocks] = useState([]);
   const audioRefs = useRef({});
   const pianoRef = useRef(null);
 
@@ -140,6 +140,21 @@ const ToolsPiano = () => {
     };
   }, []);
   
+  // Adiciona um novo bloco de exibição
+  const addDisplayBlock = (tool) => {
+    const newBlock = {
+      id: Date.now(),
+      tool: tool
+    };
+    
+    setDisplayBlocks(prev => [...prev, newBlock]);
+    
+    // Remove o bloco após 3 segundos
+    setTimeout(() => {
+      setDisplayBlocks(prev => prev.filter(block => block.id !== newBlock.id));
+    }, 3000);
+  };
+  
   const playSound = (tool) => {
     try {
       const audioKey = `${tool.note}${tool.octave}`;
@@ -157,11 +172,8 @@ const ToolsPiano = () => {
     setActiveKey(tool);
     playSound(tool);
     
-    // Efeito holográfico: mostra o nome da ferramenta e depois desaparece
-    setHoloKey(tool);
-    setTimeout(() => {
-      setHoloKey(null);
-    }, 3000); // O holograma desaparece após 3 segundos
+    // Adiciona um bloco de exibição para esta ferramenta
+    addDisplayBlock(tool);
   };
 
   // Calcula a posição de uma tecla preta com base na nota e oitava
@@ -201,6 +213,25 @@ const ToolsPiano = () => {
 
   return (
     <div className={`${styles.pianoContainer} ${styles.pianoRoot}`}>
+      {/* Display Blocks Container */}
+      <div className={styles.displayBlocksContainer}>
+        {displayBlocks.map((block) => (
+          <div 
+            key={block.id} 
+            className={styles.displayBlock}
+            style={{ 
+              borderColor: block.tool.color,
+              backgroundColor: `${block.tool.color}10` // Cor com 10% de opacidade
+            }}
+          >
+            <div className={styles.displayBlockTool}>{block.tool.tool}</div>
+            <div className={styles.displayBlockGroup} style={{ color: block.tool.color }}>
+              {block.tool.group}
+            </div>
+          </div>
+        ))}
+      </div>
+      
       <div className={styles.piano} ref={pianoRef}>
         <div className={styles.keyContainer}>
           {/* Renderiza as teclas brancas primeiro como base */}
@@ -217,18 +248,6 @@ const ToolsPiano = () => {
                 <div className={styles.keyboardKey}>{tool.keyboardKey}</div>
               )}
               <div className={styles.noteName}>{`${tool.note}${tool.octave}`}</div>
-              
-              {/* Holograma que aparece quando a tecla é pressionada */}
-              {holoKey === tool && (
-                <div className={styles.hologram} style={{ borderColor: tool.color }}>
-                  <div className={styles.hologramContent}>
-                    <div className={styles.hologramTool}>{tool.tool}</div>
-                    <div className={styles.hologramGroup}>
-                      <span style={{ color: tool.color }}>{tool.group}</span>
-                    </div>
-                  </div>
-                </div>
-              )}
             </div>
           ))}
           
@@ -251,41 +270,12 @@ const ToolsPiano = () => {
                   <div className={styles.keyboardKeyBlack}>{tool.keyboardKey}</div>
                 )}
                 <div className={styles.noteNameBlack}>{`${tool.note}${tool.octave}`}</div>
-                
-                {/* Holograma para teclas pretas */}
-                {holoKey === tool && (
-                  <div className={styles.hologramBlack} style={{ borderColor: tool.color }}>
-                    <div className={styles.hologramContent}>
-                      <div className={styles.hologramTool}>{tool.tool}</div>
-                      <div className={styles.hologramGroup}>
-                        <span style={{ color: tool.color }}>{tool.group}</span>
-                      </div>
-                    </div>
-                  </div>
-                )}
               </div>
             );
           })}
         </div>
       </div>
       
-      {activeKey && (
-        <div 
-          className={styles.toolInfo}
-          style={{ borderColor: activeKey.color }}
-        >
-          <h3 style={{ color: activeKey.color }}>{activeKey.tool}</h3>
-          <p>Group: {activeKey.group}</p>
-          <p>Note: {`${activeKey.note}${activeKey.octave}`}</p>
-          <button 
-            className={styles.playButton}
-            style={{ backgroundColor: activeKey.color }}
-            onClick={() => playSound(activeKey)}
-          >
-            Play Sound Again
-          </button>
-        </div>
-      )}
     </div>
   );
 };
