@@ -10,43 +10,37 @@ const ToolsPiano = () => {
   // Songs collection - Add new songs here
   const pianoSongs = [
     {
-      id: 'devops-pipeline',
-      title: 'DevOps CI/CD Pipeline',
-      description: 'A CI/CD pipeline using Kubernetes Pods in a virtualized Linux environment orchestrated by Jenkins',
-      notes: [
-        { note: 'C5', delay: 0 },     // Kubernetes
-        { note: 'D5', delay: 800 },   // Jenkins
-        { note: 'B4', delay: 1600 },  // Linux
-        { note: 'A4', delay: 2400 }   // VMWare
-      ]
-    },
-    {
-      id: 'data-processing',
-      title: 'What about a C Major?',
-      description: 'Backend in Django with its frontend in React, check how beutifil is this chord!',
-      notes: [
-        { note: 'C3', delay: 0 },      // React
-        { note: 'E3', delay: 12 },    // Node
-        { note: 'G3', delay: 30},   // Django
-      ]
-    },
-    {
       id: 'api-database-int',
-      title: 'API-Database Integration',
-      description: 'Need a conitinious and confident syncrhonization between your API and Database? Here is the melody!',
+      title: 'API <-> Database Integration Melody',
+      description: 'Need a continuous and confident synchronization between your API and Database? Here is the melody!',
       notes: [
-        { note: 'F3', delay: 0 },      // Rest API
-        { note: 'A3', delay: 12 },   // Mysql
-        { note: 'C4', delay: 30 },   // Redis
+        { note: 'F3', delay: 0 },     // REST API
+        { note: 'A3', delay: 12 },    // MySQL
+        { note: 'C4', delay: 30 },    // Redis
         { note: 'G5', delay: 1000 },  // Shell Script
-        { note: 'A5', delay: 1550 }   // Airflow
+        { note: 'A5', delay: 1550 },  // Airflow
+        { note: 'E5', delay: 2100 },  // Nginx
+        { note: 'D5', delay: 3000 },  // Jenkins
+      ]
+    },
+    {
+      id: 'ci-cd-expert',
+      title: 'CI/CD in my shoulder',
+      description: 'CI/CD is the backbone of modern software development. What about this virtualized environment pipelines plan? Nginx + Grafana complements the melody. Put your head in your pillow and rest tranquil.',
+      notes: [
+        { note: 'B4', delay: 0 },     // OLVM
+        { note: 'C5', delay: 650 },    // Kubernetes
+        { note: 'D5', delay: 1100 },    // Jenkins
+        { note: 'B4', delay: 1850 },   // OLVM
+        { note: 'D5', delay: 2500 },   // Jenkins
+        { note: 'F#5', delay: 3300 },  // Grafana
+        { note: 'E5', delay: 4400 },   // Nginx
       ]
     }
-    // Add more songs here as needed!
   ];
 
-  const [currentSong, setCurrentSong] = useState(pianoSongs[0]);
   const [isPlayingDemo, setIsPlayingDemo] = useState(false);
+  const [currentPlayingSong, setCurrentPlayingSong] = useState(null);
   const [currentDemoNote, setCurrentDemoNote] = useState(null);
   const demoTimeoutRef = useRef(null);
 
@@ -186,18 +180,11 @@ const ToolsPiano = () => {
     if (isPlayingDemo) return;
     
     // Find the song to play
-    const songToPlay = songId 
-      ? pianoSongs.find(song => song.id === songId) 
-      : currentSong;
-    
+    const songToPlay = pianoSongs.find(song => song.id === songId);
     if (!songToPlay) return;
     
-    // Update current song if needed
-    if (songId) {
-      setCurrentSong(songToPlay);
-    }
-    
     setIsPlayingDemo(true);
+    setCurrentPlayingSong(songId);
     
     // Clear any existing timeout
     if (demoTimeoutRef.current) {
@@ -224,13 +211,14 @@ const ToolsPiano = () => {
         if (index === songToPlay.notes.length - 1) {
           demoTimeoutRef.current = setTimeout(() => {
             setIsPlayingDemo(false);
+            setCurrentPlayingSong(null);
           }, 1000);
         }
       }, item.delay);
     });
   };
 
-  // Piano presentation component with song selector
+  // Piano presentation component with individualized song cards
   const renderPianoPresentation = () => {
     return (
       <div className={styles.presentationContainer}>
@@ -239,36 +227,30 @@ const ToolsPiano = () => {
         <p className={styles.presentationText}>
           Listing skills is commonplace. How about a touch of music instead? Each piano key represents a tool in my technology arsenal.
         </p>
-        
-        <div className={styles.songSelector}>
-          <p className={styles.songSelectorLabel}>Choose a tech melody:</p>
-          <div className={styles.songOptions}>
-            {pianoSongs.map((song) => (
+
+        <div className={styles.songCardsContainer}>
+          {pianoSongs.map(song => (
+            <div key={song.id} className={styles.songCard}>
+              <h3 className={styles.songTitle}>{song.title}</h3>
+              <p className={styles.songDescription}>{song.description}</p>
               <button 
-                key={song.id}
-                className={`${styles.songOption} ${currentSong.id === song.id ? styles.activeSong : ''}`}
-                onClick={() => setCurrentSong(song)}
+                className={`${styles.playButton} ${currentPlayingSong === song.id ? styles.playingButton : ''}`}
+                onClick={() => playDemoSequence(song.id)}
                 disabled={isPlayingDemo}
               >
-                {song.title}
+                {currentPlayingSong === song.id ? 'Playing...' : 'Play  '}
+                {currentPlayingSong !== song.id && <span className={styles.playIcon}>▶</span>}
+                {currentPlayingSong === song.id && (
+                  <span className={styles.loadingDots}>
+                    <span>.</span><span>.</span><span>.</span>
+                  </span>
+                )}
               </button>
-            ))}
-          </div>
+              <br></br><br>
+            </br>
+            </div>
+          ))}
         </div>
-        
-        <p className={styles.presentationQuestion}>
-          {currentSong.description}
-        </p>
-        
-        <button 
-          className={`${styles.playDemoButton} ${isPlayingDemo ? styles.playingDemo : ''}`}
-          onClick={() => playDemoSequence()}
-          disabled={isPlayingDemo}
-        >
-          {isPlayingDemo ? 'Playing...' : 'Play Demo'}
-          {!isPlayingDemo && <span className={styles.playIcon}>▶</span>}
-          {isPlayingDemo && <span className={styles.loadingDots}><span>.</span><span>.</span><span>.</span></span>}
-        </button>
         
         <p className={styles.presentationHint}>
           Feel free to play your own tech melody using your keyboard or by clicking the piano keys below!
@@ -420,7 +402,7 @@ const ToolsPiano = () => {
   const renderLegend = () => {
     return (
       <div className={styles.legendContainer}>
-        <div className={styles.legendTitle}>Skills & Tools</div>
+        <div className={styles.legendTitle}>Legend</div>
         <div className={styles.legendItems}>
           {toolGroups.map((group, index) => (
             <div key={index} className={styles.legendItem}>
