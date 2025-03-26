@@ -174,6 +174,11 @@ const ToolsPiano = () => {
     
     // Adiciona um bloco de exibição para esta ferramenta
     addDisplayBlock(tool);
+    
+    // Reset activeKey after a short delay to create a "pressed" effect
+    setTimeout(() => {
+      setActiveKey(null);
+    }, 200);
   };
 
   // Calcula a posição de uma tecla preta com base na nota e oitava
@@ -275,7 +280,6 @@ const ToolsPiano = () => {
           })}
         </div>
       </div>
-      
     </div>
   );
 };

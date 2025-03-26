@@ -1,7 +1,6 @@
 .pianoRoot {
   --white-key-width: calc(100% / 23); /* Número total de teclas brancas (23) */
   --black-key-width: calc(var(--white-key-width) * 0.6);
-  --key-color-rgb: 0, 0, 255;
 }
 
 .pianoContainer {
@@ -120,14 +119,19 @@
   background-color: #f5f5f5;
 }
 
+.whiteKey:hover::before {
+  height: 100%;
+  opacity: 0.15;
+}
+
 .activeWhite {
   transform: translateY(3px);
-  background-color: #f0f0f0;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1) inset;
 }
 
 .activeWhite::before {
-  height: 6px;
+  height: 100% !important;
+  opacity: 0.3 !important;
 }
 
 /* Estilo para as teclas pretas */
@@ -168,14 +172,19 @@
   background-color: #333;
 }
 
+.blackKey:hover::before {
+  height: 100%;
+  opacity: 0.3;
+}
+
 .activeBlack {
   transform: translateY(3px) translateX(-50%);
-  background-color: #333;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3) inset;
 }
 
 .activeBlack::before {
-  height: 6px;
+  height: 100% !important;
+  opacity: 0.5 !important;
 }
 
 /* Letras do teclado e notas nas teclas */
@@ -207,42 +216,6 @@
   font-weight: bold;
   margin-bottom: 10px;
   color: #ddd;
-}
-
-/* Área de informações da ferramenta */
-.toolInfo {
-  margin-top: 30px;
-  padding: 20px;
-  background-color: #f5f5f5;
-  border-radius: 10px;
-  width: 100%;
-  max-width: 600px;
-  text-align: center;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-  border-left: 4px solid var(--key-color, #000);
-  transition: all 0.3s ease;
-}
-
-.playButton {
-  margin-top: 15px;
-  padding: 10px 20px;
-  background-color: var(--key-color, #3498db);
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.playButton:hover {
-  opacity: 0.9;
-  transform: scale(1.05);
-}
-
-.playButton:active {
-  transform: scale(0.95);
 }
 
 /* Responsividade */
